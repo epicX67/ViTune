@@ -234,7 +234,7 @@ class PlayerService : InvincibleService(), Player.Listener, PlaybackStatsListene
 
         bitmapProvider = BitmapProvider(
             getBitmapSize = {
-                (512 * resources.displayMetrics.density)
+                (200 * resources.displayMetrics.density)
                     .roundToInt()
                     .coerceAtMost(AppearancePreferences.maxThumbnailSize)
             },
@@ -676,10 +676,15 @@ class PlayerService : InvincibleService(), Player.Listener, PlaybackStatsListene
         val bitmap = if (isAtLeastAndroid13 || AppearancePreferences.isShowingThumbnailInLockscreen)
             bitmapProvider.bitmap else null
 
-        metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
+//        metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
+        metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, bitmap)
+//        metadataBuilder.putString(
+//            MediaMetadata.METADATA_KEY_ART_URI,
+//            player.mediaMetadata.artworkUri?.toString()?.thumbnail(220)
+//        )
         metadataBuilder.putString(
-            MediaMetadata.METADATA_KEY_ART_URI,
-            player.mediaMetadata.artworkUri?.toString()?.thumbnail(512)
+            MediaMetadata.METADATA_KEY_ALBUM_ART_URI,
+            player.mediaMetadata.artworkUri?.toString()?.thumbnail(200)
         )
 
         if (isAtLeastAndroid13 && player.currentMediaItemIndex == 0) metadataBuilder.putText(
