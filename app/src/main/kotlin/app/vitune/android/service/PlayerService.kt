@@ -675,22 +675,16 @@ class PlayerService : InvincibleService(), Player.Listener, PlaybackStatsListene
     private fun maybeShowSongCoverInLockScreen() = handler.post {
         val bitmap = if (isAtLeastAndroid13 || AppearancePreferences.isShowingThumbnailInLockscreen)
             bitmapProvider.bitmap else null
+        val uri = player.mediaMetadata.artworkUri?.toString()?.thumbnail(200)
 
-//        metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
+        metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_ART_URI, uri)
+
         metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, bitmap)
-//        metadataBuilder.putString(
-//            MediaMetadata.METADATA_KEY_ART_URI,
-//            player.mediaMetadata.artworkUri?.toString()?.thumbnail(220)
-//        )
-        metadataBuilder.putString(
-            MediaMetadata.METADATA_KEY_ALBUM_ART_URI,
-            player.mediaMetadata.artworkUri?.toString()?.thumbnail(200)
-        )
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_ALBUM_ART_URI, uri)
 
-        if (isAtLeastAndroid13 && player.currentMediaItemIndex == 0) metadataBuilder.putText(
-            MediaMetadata.METADATA_KEY_TITLE,
-            "${player.mediaMetadata.title} "
-        )
+        if (isAtLeastAndroid13 && player.currentMediaItemIndex == 0)
+            metadataBuilder.putText(MediaMetadata.METADATA_KEY_TITLE, "${player.mediaMetadata.title} ")
 
         mediaSession.setMetadata(metadataBuilder.build())
     }
